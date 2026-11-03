@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6f1e7" />
+  <meta name="description" content="把论文、秋招、知识和生活沉淀在同一个地方。" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>拾光 · 个人成长记录</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="todayLabel"></p>
+        <h1 id="pageTitle">今天，先做重要的事</h1>
+      </div>
+      <button class="icon-button" id="searchButton" aria-label="搜索记录">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+      </button>
+    </header>
+
+    <main>
+      <section class="view active" data-view="home">
+        <article class="focus-card">
+          <div class="focus-copy">
+            <span class="focus-kicker">今日焦点</span>
+            <h2 id="focusTitle">从一件小事开始</h2>
+            <p id="focusHint">记录会让模糊的努力留下轨迹。</p>
+          </div>
+          <div class="progress-ring" id="progressRing" aria-label="今日待办完成进度">
+            <span id="progressValue">0%</span>
+          </div>
+        </article>
+
+        <div class="section-heading">
+          <h2>快捷记录</h2>
+          <span>想到就记，不打断思路</span>
+        </div>
+        <div class="quick-grid" id="quickGrid"></div>
+
+        <div class="section-heading">
+          <h2>今天的待办</h2>
+          <button class="text-button" data-open-module="todo">查看全部</button>
+        </div>
+        <div class="task-list" id="todayTasks"></div>
+
+        <article class="review-card">
+          <div class="review-icon">↗</div>
+          <div>
+            <h3>留一点时间给复盘</h3>
+            <p id="reviewPrompt">今天哪一步做得比昨天更好？</p>
+          </div>
+          <button class="round-button" data-quick-add="reflection" aria-label="写复盘">＋</button>
+        </article>
+      </section>
+
+      <section class="view" data-view="modules">
+        <div class="section-heading page-section-heading">
+          <div><p class="eyebrow">你的知识与成长空间</p><h2>全部模块</h2></div>
+          <button class="outline-button" id="addModuleButton">＋ 新建模块</button>
+        </div>
+        <div class="module-grid" id="moduleGrid"></div>
+      </section>
+
+      <section class="view" data-view="records">
+        <div class="record-toolbar">
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+            <input id="searchInput" type="search" placeholder="搜索标题、内容或标签" autocomplete="off" />
+          </label>
+          <div class="filter-chips" id="filterChips"></div>
+        </div>
+        <div class="record-list" id="recordList"></div>
+      </section>
+
+      <section class="view" data-view="profile">
+        <article class="profile-card">
+          <div class="profile-avatar">我</div>
+          <div><p class="eyebrow">PERSONAL GROWTH OS</p><h2>你的成长档案</h2><p id="profileSummary">每一次记录，都在帮未来的你。</p></div>
+        </article>
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="section-heading"><h2>数据与设置</h2></div>
+        <div class="settings-list">
+          <button class="setting-row" id="exportButton"><span class="setting-icon">⇩</span><span><b>导出备份</b><small>下载全部记录与自定义模块</small></span><em>›</em></button>
+          <label class="setting-row file-row"><span class="setting-icon">⇧</span><span><b>导入备份</b><small>从 JSON 文件恢复数据</small></span><em>›</em><input type="file" id="importInput" accept="application/json" /></label>
+          <button class="setting-row" id="installButton"><span class="setting-icon">⌂</span><span><b>安装到手机桌面</b><small>全屏运行、离线打开，像普通 App 一样使用</small></span><em>›</em></button>
+        </div>
+
+        <div class="privacy-note"><span>⌁</span><p><b>你的数据属于你</b><br />当前版本的记录仅保存在这台设备的浏览器中，请定期导出备份。</p></div>
+      </section>
+
+      <section class="module-detail" id="moduleDetail" aria-hidden="true">
+        <header class="detail-header">
+          <button class="icon-button" id="closeModuleButton" aria-label="返回">←</button>
+          <div><p class="eyebrow" id="detailEyebrow">模块</p><h2 id="detailTitle"></h2></div>
+          <button class="icon-button" id="detailAddButton" aria-label="新增记录">＋</button>
+        </header>
+        <div class="detail-summary" id="detailSummary"></div>
+        <div class="record-list" id="detailRecordList"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="主导航">
+      <button class="nav-item active" data-target="home"><span>⌂</span><b>今日</b></button>
+      <button class="nav-item" data-target="modules"><span>◫</span><b>模块</b></button>
+      <button class="add-button" id="mainAddButton" aria-label="新建记录">＋</button>
+      <button class="nav-item" data-target="records"><span>≡</span><b>记录</b></button>
+      <button class="nav-item" data-target="profile"><span>○</span><b>我的</b></button>
+    </nav>
+  </div>
+
+  <div class="modal-backdrop" id="entryModal" aria-hidden="true">
+    <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle">
+      <div class="sheet-grabber"></div>
+      <div class="sheet-header"><div><p class="eyebrow">随手记下，稍后整理</p><h2 id="entryModalTitle">新建记录</h2></div><button class="icon-button close-modal" aria-label="关闭">×</button></div>
+      <form id="entryForm">
+        <input type="hidden" id="entryId" />
+        <label>记录到<select id="entryModule"></select></label>
+        <label>标题<input id="entryTitle" maxlength="80" placeholder="用一句话概括" required /></label>
+        <label>详细内容<textarea id="entryContent" rows="5" placeholder="问题、思路、结论或当下的感受……"></textarea></label>
+        <div class="form-row">
+          <label>标签<input id="entryTags" placeholder="例如：论文, Java" /></label>
+          <label id="dueDateWrap">截止日期<input id="entryDue" type="date" /></label>
+        </div>
+        <div class="form-row" id="taskExtras">
+          <label>优先级<select id="entryPriority"><option value="high">重要</option><option value="medium" selected>普通</option><option value="low">稍后</option></select></label>
+          <label>状态<select id="entryStatus"><option value="open">待完成</option><option value="done">已完成</option></select></label>
+        </div>
+        <button class="primary-button" type="submit">保存记录</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="moduleModal" aria-hidden="true">
+    <div class="bottom-sheet compact-sheet" role="dialog" aria-modal="true" aria-labelledby="moduleModalTitle">
+      <div class="sheet-grabber"></div>
+      <div class="sheet-header"><div><p class="eyebrow">按你的方式组织生活</p><h2 id="moduleModalTitle">新建模块</h2></div><button class="icon-button close-modal" aria-label="关闭">×</button></div>
+      <form id="moduleForm">
+        <label>模块名称<input id="moduleName" maxlength="12" placeholder="例如：论文灵感" required /></label>
+        <label>一句描述<input id="moduleDescription" maxlength="40" placeholder="这个模块用来记录什么？" /></label>
+        <fieldset><legend>选择图标</legend><div class="emoji-picker" id="emojiPicker"></div></fieldset>
+        <button class="primary-button" type="submit">创建模块</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
